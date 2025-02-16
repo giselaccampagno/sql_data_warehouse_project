@@ -1,9 +1,6 @@
-SELECT "-------------------";
-SELECT "Loading CRM Tables";
-SELECT "--------------------";
-
-SELECT "Truncating & Loading crm_cust_info Tables";
-SELECT "------------------------------------------";
+/* 
+Truncating & Loading CRM Tables
+*/
 
 TRUNCATE TABLE crm_cust_info;
 
@@ -17,11 +14,12 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 SET @end_time = NOW();
 
-SELECT CONCAT(">> Load Duration: ", TIMESTAMPDIFF(SECOND, @start_time, @end_time));
-SELECT "--------------------------------------------------------------------------";
+SELECT CONCAT(
+    "Truncating & Loading crm_cust_info Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
-SELECT "Truncating & Loading crm_prd_info Tables";
-SELECT "------------------------------------------";
 
 TRUNCATE TABLE crm_prd_info;
 
@@ -36,11 +34,13 @@ IGNORE 1 LINES;
 TRUNCATE TABLE crm_sales_details;
 SET @end_time = NOW();
 
-SELECT CONCAT(">> Load Duration: ", TIMESTAMPDIFF(SECOND, @start_time, @end_time));
-SELECT "---------------------------------------------------------------------------";
+SELECT CONCAT(
+    "Truncating & Loading crm_prd_info Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
-SELECT "Truncating & Loading crm_sales_details Tables";
-SELECT "------------------------------------------";
+TRUNCATE TABLE crm_sales_details;
 
 SET @start_time = NOW();
 LOAD DATA INFILE 
@@ -52,15 +52,15 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 SET @end_time = NOW();
 
-SELECT CONCAT(">> Load Duration: ", TIMESTAMPDIFF(SECOND, @start_time, @end_time));
-SELECT "--------------------------------------------------------------------------";
+SELECT CONCAT(
+    "Truncating & Loading crm_sales_details Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
-SELECT "-------------------";
-SELECT "Loading ERP Tables";
-SELECT "--------------------";
-
-SELECT "Truncating & Loading erp_cust_az12 Tables";
-SELECT "-----------------------------------------";
+/* 
+Truncating & Loading CRM Tables
+*/
 
 TRUNCATE TABLE erp_cust_az12;
 
@@ -74,11 +74,11 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 SET @end_time = NOW();
 
-SELECT CONCAT(">> Load Duration: ", TIMESTAMPDIFF(SECOND, @start_time, @end_time));
-SELECT "-------------------------------------------------------------------------";
-
-SELECT "Truncating & Loading erp_loc_a101 Tables";
-SELECT "------------------------------------------";
+SELECT CONCAT(
+    "Truncating & Loading erp_cust_az12 Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
 TRUNCATE TABLE erp_loc_a101;
 
@@ -92,11 +92,11 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 SET @end_time = NOW();
 
-SELECT CONCAT(">> Load Duration: ", TIMESTAMPDIFF(SECOND, @start_time, @end_time));
-SELECT "-------------------------------------------------------------------------";
-
-SELECT "Truncating & Loading erp_px_cat_g1v2 Tables";
-SELECT "------------------------------------------";
+SELECT CONCAT(
+    "Truncating & Loading erp_loc_a101 Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
 TRUNCATE TABLE erp_px_cat_g1v2;
 
@@ -110,9 +110,11 @@ LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 SET @end_time = NOW();
 
-SELECT CONCAT(">> Load Duration: ", TIMESTAMPDIFF(SECOND, @start_time, @end_time));
-SELECT "---------------------------------------------------------------------------";
-
+SELECT CONCAT(
+    "Truncating & Loading erp_px_cat_g1v2 Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
 
 
