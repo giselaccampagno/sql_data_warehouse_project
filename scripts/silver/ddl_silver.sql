@@ -17,6 +17,7 @@ CREATE TABLE `crm_cust_info` (
 
 CREATE TABLE `crm_prd_info` (
   `prd_id` int DEFAULT NULL,
+  `cat_id` varchar(50) DEFAULT NULL,
   `prd_key` varchar(50) DEFAULT NULL,
   `prd_nm` varchar(50) DEFAULT NULL,
   `prd_cost` int DEFAULT NULL,
