@@ -78,3 +78,22 @@ SELECT
     ELSE sls_price
   END AS sls_price
 FROM bronze.crm_sales_details;
+
+-- Loading erp_cust_az12 Table
+
+INSERT INTO silver.erp_cust_az12 (
+	cid,
+    bdate, 
+    gen
+)
+	SELECT 
+		SUBSTRING(cid, 4, LENGTH(cid)),
+		CASE WHEN bdate > NOW() THEN NULL
+			ELSE bdate
+		END AS bdate,
+		CASE 
+			WHEN UPPER(TRIM(gen)) IN ('M', 'MALE') THEN 'Male'
+			WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female'
+			ELSE 'N/A'
+		END AS gen
+	FROM bronze.erp_cust_az12;
