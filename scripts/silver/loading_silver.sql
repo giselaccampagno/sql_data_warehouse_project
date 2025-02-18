@@ -1,5 +1,8 @@
 -- Loading crm_cust_info Table
 
+TRUNCATE TABLE crm_cust_info;
+
+SET @start_time = NOW();
 INSERT INTO silver.crm_cust_info (
 cst_id, cst_key, cst_firstname, cst_lastname, 
 cst_marital_status, cst_gndr, cst_create_date)
@@ -25,9 +28,19 @@ FROM (
 	FROM bronze.crm_cust_info
     WHERE cst_id IS NOT NULL) AS t
     WHERE flag_last=1; -- Select the most recent record per cuatomer 
+SET @end_time = NOW();
+
+SELECT CONCAT(
+    "Truncating & Loading crm_cust_info Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
 -- Loading crm_prd_info Table
 
+TRUNCATE TABLE crm_prd_info;
+
+SET @start_time = NOW();
 INSERT INTO silver.crm_prd_info (
 prd_id, cat_id, prd_key, prd_nm, prd_cost, prd_line, prd_start_dt, prd_end_dt)
 SELECT  
@@ -46,9 +59,19 @@ SELECT
     prd_start_dt,
     LEAD(prd_start_dt) OVER(PARTITION BY prd_key ORDER BY prd_start_dt - 1) prd_end_dt
 FROM bronze.crm_prd_info;
+SET @end_time = NOW();
+
+SELECT CONCAT(
+    "Truncating & Loading crm_prod_info Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
 -- Loading crm_sales_details Table
 
+TRUNCATE TABLE crm_prd_info;
+
+SET @start_time = NOW();
 INSERT INTO silver.crm_sales_details (
   sls_ord_num,
   sls_prd_key,
@@ -78,9 +101,19 @@ SELECT
     ELSE sls_price
   END AS sls_price
 FROM bronze.crm_sales_details;
+SET @end_time = NOW();
+
+SELECT CONCAT(
+    "Truncating & Loading crm_sales_details Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
 -- Loading erp_cust_az12 Table
 
+TRUNCATE TABLE erp_cust_az12;
+
+SET @start_time = NOW();
 INSERT INTO silver.erp_cust_az12 (
 	cid,
     bdate, 
@@ -97,9 +130,19 @@ INSERT INTO silver.erp_cust_az12 (
 			ELSE 'N/A'
 		END AS gen
 	FROM bronze.erp_cust_az12;
+SET @end_time = NOW();
+
+SELECT CONCAT(
+    "Truncating & Loading erp_cust_az12 Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
 -- Loading silver.erp_loc_a101 Table
 
+TRUNCATE TABLE erp_loc_a101;
+
+SET @start_time = NOW();
 INSERT INTO silver.erp_loc_a101 (
 			cid,
 			cntry
@@ -113,9 +156,19 @@ INSERT INTO silver.erp_loc_a101 (
 				ELSE TRIM(cntry)
 			END AS cntry -- Normalize and Handle missing or blank country codes
 		FROM bronze.erp_loc_a101;
+SET @end_time = NOW();
+
+SELECT CONCAT(
+    "Truncating & Loading erp_loc_a101 Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
 -- Loading silver.px_cat_g1v2 Table
 
+TRUNCATE TABLE erp_px_cat_g1v2;
+
+SET @start_time = NOW();
 INSERT INTO silver.erp_px_cat_g1v2 (
 	id,
     cat,
@@ -130,4 +183,11 @@ SELECT
         ELSE maintenance
 	END AS maintenance
 FROM bronze.erp_px_cat_g1v2;
+SET @end_time = NOW();
+
+SELECT CONCAT(
+    "Truncating & Loading erp_px_cat_g1v2 Table\n >> Load Duration: ", 
+    CAST(TIMESTAMPDIFF(SECOND, @start_time, @end_time) AS CHAR), 
+    " seconds\n"
+) AS Output;
 
