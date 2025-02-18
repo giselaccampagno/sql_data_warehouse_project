@@ -122,7 +122,7 @@ INSERT INTO silver.erp_px_cat_g1v2 (
     subcat,
     maintenance)
 SELECT 
-	REPLACE(TRIM(id), '_', '-') AS id,
+	id,
     cat,
     subcat,
     CASE 
