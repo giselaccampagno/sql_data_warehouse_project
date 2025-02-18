@@ -116,3 +116,18 @@ INSERT INTO silver.erp_loc_a101 (
 
 -- Loading silver.px_cat_g1v2 Table
 
+INSERT INTO silver.erp_px_cat_g1v2 (
+	id,
+    cat,
+    subcat,
+    maintenance)
+SELECT 
+	REPLACE(TRIM(id), '_', '-') AS id,
+    cat,
+    subcat,
+    CASE 
+		WHEN TRIM(maintenance) = 'Yes' THEN 'Yes'
+        ELSE maintenance
+	END AS maintenance
+FROM bronze.erp_px_cat_g1v2;
+
