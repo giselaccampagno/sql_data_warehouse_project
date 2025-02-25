@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS bronze;
+DROP DATABASE IF EXISTS bronze2;
 
-CREATE DATABASE bronze;
+CREATE DATABASE bronze2;
 
-USE bronze;
+USE bronze2;
 
 CREATE TABLE crm_cust_info (
 		cst_id INT,
