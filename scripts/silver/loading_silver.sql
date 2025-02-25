@@ -114,22 +114,28 @@ SELECT CONCAT(
 TRUNCATE TABLE erp_cust_az12;
 
 SET @start_time = NOW();
-INSERT INTO silver.erp_cust_az12 (
-	cid,
-    bdate, 
-    gen
-)
-	SELECT 
-		SUBSTRING(cid, 4, LENGTH(cid)),
-		CASE WHEN bdate > NOW() THEN NULL
-			ELSE bdate
-		END AS bdate,
-		CASE 
-			WHEN UPPER(TRIM(gen)) IN ('M', 'MALE') THEN 'Male'
-			WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female'
-			ELSE 'N/A'
-		END AS gen
-	FROM bronze.erp_cust_az12;
+INSERT INTO silver2.erp_cust_az12
+(cid, bdate, gen)
+SELECT 
+	SUBSTRING(cid, 4, LENGTH(cid)) AS cid, 
+    CASE 
+		WHEN bdate > NOW() OR bdate < '1925-01-01'
+        THEN NULL
+		ELSE bdate
+    END AS bdate, -- Converting invalid birthdates to NULL
+    CASE
+		WHEN UPPER(TRIM(REPLACE(REPLACE(gen, CHAR(13), ''), CHAR(10), ''))) = 'MALE'
+        THEN 'Male'
+        WHEN UPPER(TRIM(REPLACE(REPLACE(gen, CHAR(13), ''), CHAR(10), ''))) = 'FEMALE'
+        THEN 'Female'
+		ELSE 'n/a'
+	END	AS gen
+	/* 
+    Removing carriage return (CHAR(13)) and newline (CHAR(10)) characters.
+	Removing leading and trailing spaces from the cleaned gen value.
+	Converting the cleaned value to uppercase to ensure case insensitivity.
+    */
+FROM bronze2.erp_cust_az12;
 SET @end_time = NOW();
 
 SELECT CONCAT(
