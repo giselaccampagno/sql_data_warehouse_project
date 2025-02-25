@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS silver;
+DROP DATABASE IF EXISTS silver2;
 
-CREATE DATABASE silver;
+CREATE DATABASE silver2;
 
-USE silver;
+USE silver2;
 
 CREATE TABLE `crm_cust_info` (
   `cst_id` int DEFAULT NULL,
