@@ -144,24 +144,28 @@ SELECT CONCAT(
     " seconds\n"
 ) AS Output;
 
--- Loading silver.erp_loc_a101 Table
+-- Loading erp_loc_a101 Table
 
 TRUNCATE TABLE erp_loc_a101;
 
 SET @start_time = NOW();
-INSERT INTO silver.erp_loc_a101 (
-			cid,
-			cntry
-		)
-		SELECT
-			REPLACE(cid, '-', '') AS cid, 
-			CASE
-				WHEN TRIM(cntry) = 'DE' THEN 'Germany'
-				WHEN TRIM(cntry) IN ('US', 'USA') THEN 'United States'
-				WHEN TRIM(cntry) = '' OR cntry IS NULL THEN 'n/a'
-				ELSE TRIM(cntry)
-			END AS cntry -- Normalize and Handle missing or blank country codes
-		FROM bronze.erp_loc_a101;
+INSERT INTO silver2.erp_loc_a101
+(cid, cntry)
+SELECT 
+	REPLACE(cid, '-', '') AS cid,
+	CASE
+		WHEN UPPER(TRIM(REPLACE(REPLACE(cntry, CHAR(13), ''), CHAR(10), ''))) IN ('US', 'USA') THEN 'United States'
+		WHEN UPPER(TRIM(REPLACE(REPLACE(cntry, CHAR(13), ''), CHAR(10), ''))) = 'DE' THEN 'Germany'
+		WHEN TRIM(REPLACE(REPLACE(cntry, CHAR(13), ''), CHAR(10), '')) = '' THEN 'n/a' -- Handling empty strings explicitly
+		WHEN UPPER(TRIM(REPLACE(REPLACE(cntry, CHAR(13), ''), CHAR(10), ''))) IS NULL THEN 'n/a'
+		ELSE TRIM(REPLACE(REPLACE(cntry, CHAR(13), ''), CHAR(10), '')) -- Trim to remove any extra spaces
+	END AS cntry
+/* 
+	Removing carriage return (CHAR(13)) and newline (CHAR(10)) characters.
+	Removing leading and trailing spaces from the cleaned gen value.
+	Converting the cleaned value to uppercase to ensure case insensitivity.
+*/    
+FROM bronze2.erp_loc_a101;
 SET @end_time = NOW();
 
 SELECT CONCAT(
@@ -170,7 +174,7 @@ SELECT CONCAT(
     " seconds\n"
 ) AS Output;
 
--- Loading silver.px_cat_g1v2 Table
+-- Loading px_cat_g1v2 Table
 
 TRUNCATE TABLE erp_px_cat_g1v2;
 
