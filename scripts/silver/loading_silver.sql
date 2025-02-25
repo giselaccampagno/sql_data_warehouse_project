@@ -179,20 +179,18 @@ SELECT CONCAT(
 TRUNCATE TABLE erp_px_cat_g1v2;
 
 SET @start_time = NOW();
-INSERT INTO silver.erp_px_cat_g1v2 (
-	id,
-    cat,
-    subcat,
-    maintenance)
+INSERT INTO silver2.erp_px_cat_g1v2
+(id, cat, subcat, maintenance)
 SELECT 
 	id,
     cat,
     subcat,
-    CASE 
-		WHEN TRIM(maintenance) = 'Yes' THEN 'Yes'
-        ELSE maintenance
-	END AS maintenance
-FROM bronze.erp_px_cat_g1v2;
+    TRIM(REPLACE(REPLACE(maintenance, CHAR(13), ''), CHAR(10), '')) as maintenance
+/* 
+	Removing carriage return (CHAR(13)) and newline (CHAR(10)) characters.
+	Removing leading and trailing spaces from the cleaned gen value.
+*/
+FROM bronze2.erp_px_cat_g1v2;
 SET @end_time = NOW();
 
 SELECT CONCAT(
