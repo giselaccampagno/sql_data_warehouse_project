@@ -69,10 +69,10 @@ SELECT CONCAT(
 
 -- Loading crm_sales_details Table
 
-TRUNCATE TABLE crm_prd_info;
+TRUNCATE TABLE crm_sales_details;
 
 SET @start_time = NOW();
-INSERT INTO silver.crm_sales_details (
+INSERT INTO silver2.crm_sales_details (
   sls_ord_num,
   sls_prd_key,
   sls_cust_id,
@@ -100,7 +100,7 @@ SELECT
     WHEN sls_price IS NULL OR sls_price <= 0 THEN sls_sales / IFNULL(sls_quantity, 0)
     ELSE sls_price
   END AS sls_price
-FROM bronze.crm_sales_details;
+FROM bronze2.crm_sales_details;
 SET @end_time = NOW();
 
 SELECT CONCAT(
