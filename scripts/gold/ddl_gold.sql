@@ -26,27 +26,29 @@ ON ci.cst_key = la.cid
 );
 
 -- =============================================================================
--- Create Dimension: gold.dim_products
+-- Create Dimension: gold2.dim_products
 -- =============================================================================
-DROP VIEW IF EXISTS gold.dim_products;
+DROP VIEW IF EXISTS gold2.dim_products;
 
-CREATE VIEW gold.dim_products AS
-SELECT
-    ROW_NUMBER() OVER (ORDER BY pn.prd_start_dt, pn.prd_key) AS product_key, -- Surrogate key
-    pn.prd_id       AS product_id,
-    pn.prd_key      AS product_number,
-    pn.prd_nm       AS product_name,
-    pn.cat_id       AS category_id,
-    pc.cat          AS category,
-    pc.subcat       AS subcategory,
-    pc.maintenance  AS maintenance,
-    pn.prd_cost     AS cost,
-    pn.prd_line     AS product_line,
-    pn.prd_start_dt AS start_date
-FROM silver.crm_prd_info pn
-LEFT JOIN silver.erp_px_cat_g1v2 pc
-    ON pn.cat_id = pc.id
-WHERE pn.prd_end_dt IS NULL; -- Filter out all historical data
+CREATE VIEW dim_products AS (
+SELECT 
+	ROW_NUMBER() OVER(ORDER BY pi.prd_start_dt, pi.prd_key) AS product_key, 
+    -- Foreign key
+	pi.prd_id AS product_id,
+    pi.prd_key AS product_number,
+	pi.prd_nm AS product_name,
+    pi.cat_id AS category_id,
+	cg.cat AS category,
+	cg.subcat AS subcategory,
+	cg.maintenance,
+	pi.prd_line AS product_line,
+    pi.prd_cost AS product_cost,
+    pi.prd_start_dt AS product_start_date
+FROM silver2.crm_prd_info AS pi
+LEFT JOIN silver2.erp_px_cat_g1v2 AS cg
+ON pi.cat_id = cg.id
+WHERE pi.prd_end_dt IS NULL -- Filter out all historical data
+);
 
 -- =============================================================================
 -- Create Fact Table: gold.fact_sales
