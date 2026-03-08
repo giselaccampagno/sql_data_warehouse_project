@@ -91,4 +91,4 @@ Hi! I'm Gisela Campagno, and I enjoy exploring data to uncover patterns and insi
 
 Feel free to explore, give feedback, or suggest improvements. I'm always open to new ideas and collaborations.
 
-📫 Want to connect? Reach out to me on [LinkedIn](https://www.linkedin.com/in/gisela-campagno) or [Email](mailto:giselacampagno@gmail.com).  .
+📫 Want to connect? Reach out to me on [LinkedIn](https://www.linkedin.com/in/gisela-campagno).
